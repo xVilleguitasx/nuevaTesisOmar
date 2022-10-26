@@ -785,9 +785,68 @@
           </ng-template>
         </li>
         <li [ngbNavItem]="3">
-          <a ngbNavLink></a>
+          <a ngbNavLink>Expositores</a>
           <ng-template ngbNavContent>
-            
+            <div class="scrollme">
+              <div class="col-6" style="text-align: left">
+                <button class="btn btn-rojo" (click)="generarTodoCertificadoExpositor()">
+                  Generar certificados Expositores
+                </button>
+               
+              </div>
+              <table class="table table-striped mt-3">
+                <thead>
+                  <tr style="font-weight: bold; font-size: 12px">
+                    <td scope="col">Certificado Expositor</td>
+                    <td scope="col">Nombre</td>
+                    <td scope="col">Título paper</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let expositor of expositores
+                        | slice: (page - 1) * pageSize:page * pageSize
+                    "
+                    style="font-size: 10px"
+                  >
+                    <td scope="col " *ngIf="expositor.certificado_E === ''  || expositor.certificado_E===null">
+                      <label class="container" id="c2">
+                        <input
+                          type="checkbox"
+                        
+                          class="chek"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td scope="col " *ngIf="expositor.certificado_E != '' && expositor.certificado_E!=null">
+                      <label class="container" id="c2">
+                        <input
+                          type="checkbox"
+                          checked="checked"
+                          class="chek"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+    
+                    <td scope="col">{{ expositor.nombre }}</td>
+                    <td scope="col">{{ expositor.titulo }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+    
+            <ngb-pagination
+              [collectionSize]="expositores.length"
+              [pageSize]="pageSize"
+              [(page)]="page"
+              [maxSize]="20"
+              [rotate]="true"
+              [ellipses]="false"
+              [boundaryLinks]="true"
+            ></ngb-pagination>
           </ng-template>
         </li>
       </ul>

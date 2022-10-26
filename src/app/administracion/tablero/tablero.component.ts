@@ -101,7 +101,9 @@ import { CertificadosCService } from "../../../app/services/certificados-c.servi
 import { AutoresService } from "../../../app/services/autores.service";
 import { Autores } from "../../../app/models/autores.model";
 import { CertificadosAsistenciaService } from "../../../app/services/certificados-asistencia.service";
-import { element } from "protractor";
+
+import { ExpositorService } from "../../../app/services/expositor.service";
+import { Expositor } from "../../../app/models/expositor.model";
 
 @Component({
   selector: "app-tablero",
@@ -196,7 +198,8 @@ export class TableroComponent implements OnInit {
     private _certificadosPService: CertificadosPService,
     private _certificadosCService: CertificadosCService,
     private _autoresService: AutoresService,
-    private _certificadosAsistenicaService: CertificadosAsistenciaService
+    private _certificadosAsistenicaService: CertificadosAsistenciaService,
+    private _expositorService:ExpositorService
   ) {}
   usuarios: Usuarios[] = [];
   registros: string[] = [
@@ -478,6 +481,13 @@ export class TableroComponent implements OnInit {
     this.getUsuarios();
     this.getTipoUsuario();
     this.getAutores();
+    this.getExpositores();
+  }
+  expositores:Expositor[]=[];
+  getExpositores() {
+   this._expositorService.getAutores().subscribe((result)=>{
+this.expositores=result;
+   })
   }
   getAutores() {
     this._autoresService.getAutores().subscribe((result) => {
@@ -4045,6 +4055,19 @@ export class TableroComponent implements OnInit {
     });
     setTimeout(() => {
       this.getAutores();
+    }, 5000);
+  }
+  generarTodoCertificadoExpositor() {
+    this.expositores.forEach((element) => {
+      const enviar = {
+        id: element.id,
+        nombre: element.nombre,
+        titulo: element.titulo,
+      };
+      this._expositorService.generarCertificado(enviar).subscribe((result) => {});
+    });
+    setTimeout(() => {
+      this.getExpositores();
     }, 5000);
   }
 
