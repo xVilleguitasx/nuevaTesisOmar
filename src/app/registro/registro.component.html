@@ -1,0 +1,679 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="separador"></div>
+
+  
+<div class="main-content animate__animated animate__zoomIn" *ngIf="registroID">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image" style="background-color: #fff;">
+
+        </div>
+        <div class="card-body">
+          <div class="author">
+
+            <img class="avatar border-gray" src="./assets/img/usuario.png" alt="...">
+            <h5 class="title">INGRESE SU DOCUMENTO DE IDENTIDAD.</h5>
+            <h5 class="title">ENTER YOUR IDENTITY DOCUMENT. </h5>
+          </div>
+          <div class="description">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control mt-2 input-inicio" [(ngModel)]="documentoIdentidad" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                    style="text-align: center">
+                    <label class="ayuda">C.I./Passport</label>
+                  
+                    
+                </div>
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <ngb-toast style=" margin: 0 auto;"class="toast" *ngIf="cedulaImcompleta"  [autohide]="false" (hidden)="show=false">
+            Ingrese su documento de identidad para continuar/Enter your identity document to continue
+          </ngb-toast>
+        </div>
+        <hr>
+        <div class="button-container">
+          <button class="btn  button-perso" (click)="cambiarForm('registroForm')">
+            Continuar / Next
+                   
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-content animate__animated animate__zoomIn" *ngIf="registroForm">
+ 
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+
+          <h5 class="title" style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-right: 20px;"
+              (click)="cambiarForm('registroID')"></i>Registro/Register</h5>
+             
+        </div>
+        <div class="card-body">
+          <div style="text-align: center;">
+          <div class="spinner-grow" role="status"  *ngIf="!datosCargados">
+         
+          </div>
+        </div>
+          <form  *ngIf="datosCargados">
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Tipo de Identificación/ Identification Type</label>
+                  <br>
+                  <div class="d-inline-block" ngbDropdown #dropIdentificacion="ngbDropdown" >
+                    <button type="button" class="btn btn-outline btn-neutral border  btn-block" id="dropdownManual" [disabled]="inscripcionExiste"
+                      ngbDropdownAnchor (focus)="dropIdentificacion.open()">{{tipoIdentificacion}}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem *ngFor="let identificacion of identificaciones"
+                        (click)="CambiarDocumento(identificacion)">{{identificacion.nombre}}</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-md-3 px-1">
+                <div class="form-group">
+                  <label>Documento de identifición/ Identification Document</label>
+                  <input [disabled]="inscripcionExiste" type="text" class="form-control mt-2" [(ngModel)]="documentoIdentidad" (blur)="validarCedula(event)"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                    [ngModelOptions]="{standalone: true}"  >  
+                    <div class="alert alert-danger mt-3" role="alert" *ngIf="!cedulaCorrecta" >
+                      Cedula Incorrecta/ Wrong ID
+                    </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Nombres Completos/ Complete Names </label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="nombres"onkeydown="return /[a-z, ]/i.test(event.key)"
+                    [ngModelOptions]="{standalone: true}"  >
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Apellidos Completos/ Complete Surnames</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="apellidos"  onkeydown="return /[a-z, ]/i.test(event.key)"
+                    [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Dirección/ Address</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="direccion"
+                    [ngModelOptions]="{standalone: true}" >
+                </div>
+              </div>
+
+            </div>
+            <p style="font-weight: bold;"></p>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo de Inscripción/ Type of Inscription</label>
+                  <br>
+                  <div class="d-inline-block" ngbDropdown #dropInscripcion="ngbDropdown">
+                    <button type="button" class="btn btn-outline  btn-block btn-neutral border" id="dropdownManual"
+                      ngbDropdownAnchor (focus)="dropInscripcion.open()">{{tipoInscripcion}}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem *ngFor="let inscripcion of inscripciones"
+                        (click)="CambiarInscripcion(inscripcion)">{{inscripcion.nom_inscr}}</button> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="row" *ngIf="tipoEstudiante">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Carrera/Degree </label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropCarrera="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border" id="dropdownManual"
+                          ngbDropdownAnchor (focus)="dropCarrera.open()">{{tipoCarrera}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                          <button ngbDropdownItem (click)="CambiarCarrera(carrera)"
+                            *ngFor="let carrera of carreras">{{carrera.carrera}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row" *ngIf="tipoEstudiante">
+                  <br>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Semestre/Semester</label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropSemestre="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border"
+                          id="dropdownSemestre" ngbDropdownAnchor
+                          (focus)="dropSemestre.open()">{{tipoSemestre}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownSemestre">
+                          <button ngbDropdownItem (click)="CambiarSemestre(semestre)"
+                            *ngFor="let semestre of semestres">{{semestre.semestre}}</button>
+                        </div>
+                      </div>
+                      <label style="color: rgb(141, 15, 15) !important;" >
+                        Seleccione el semestre en el que tenga mas creditos.</label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Paralelo/Parallel</label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropdownParalelo="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border"
+                          id="dropdownParalelo" ngbDropdownAnchor
+                          (focus)="dropdownParalelo.open()">{{tipoParalelo}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownParalelo">
+                          <button ngbDropdownItem (click)="CambiarParalelo(paralelo)"
+                            *ngFor="let paralelo of paralelos">{{paralelo.nombre}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+               <!--  <div class="row" *ngIf="tipoAutor">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Tipo Paper/Paper Type</label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropRevista="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border" id="dropdownManual"
+                          ngbDropdownAnchor (focus)="dropRevista.open()">{{tipoPaper}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                          <button ngbDropdownItem (click)="CambiarPaper(paper)"
+                            *ngFor="let paper of papers">{{paper.tipo}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5 pr-1">
+                    <div class="form-group">
+                      <label>Ids Paper</label>
+                      <input type="text" class="form-control mt-2" [(ngModel)]="idPaper"   [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+       
+          <!--   <div *ngIf="tipoAutor" style="text-align: center">
+             <h5 class="title">Autores Paper/Paper Authors</h5>
+              <div class="row" style="text-align: left;" >
+                <div class="col-md-3">
+                 <label> Nombre/Name</label>
+                </div>
+                <div class="col-md-3">
+                  <label> Apellido/Surname</label>
+                 </div>
+                 <div class="col-md-3">
+                  <label> Ponente/Speaker Paper</label>
+                 </div>
+            
+              </div>
+            <div class="row" style="margin-top:5px" *ngFor="let autor of autores; let indice = index" >
+             
+                <div class="col-md-3 mt-3">
+                  <input type="text" [(ngModel)]="autor.nombre" class="form-control" [ngModelOptions]="{standalone: true}" />
+                </div>
+                <div class="col-md-3  mt-3">
+                  <input type="text" [(ngModel)]="autor.apellido" class="form-control" [ngModelOptions]="{standalone: true}" />
+                </div>
+                <div class="col-md-3  mt-3">
+                  <label class="container" id="c2" *ngIf="autor.expositor">
+                    <input
+                      type="checkbox"
+                      checked="checked"
+                      (click)="cambiarEstadoExpositor(autor)"
+                      class="chek"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                  <label class="container" id="c2" *ngIf="!autor.expositor">
+                    <input
+                      type="checkbox"
+                      (click)="cambiarEstadoExpositor(autor)"
+                      class="chek"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              <div class="col-md-3 mt-3 " style="text-align: left;" *ngIf="indice!=0">
+                <button class="btn  button-perso" (click)="eliminarAutor(indice)">
+                  Eliminar / Delete
+                </button>
+              </div>
+            
+             
+            </div>
+            <div style="color: red !important;">
+              <label >Mensaje: AGREGAR de forma obligatoria todos los autores del paper, verificar que conste ud dentro de los Autores.
+                </label>
+                <label >
+                  Mandatory ADD all the authors of the paper, verify that you are among the authors.</label>
+            </div>
+           
+            <br>
+            <button class="btn button-perso"  (click)="agregarAutor()">Agregar / ADD</button>
+            </div> -->
+            <div *ngFor="let paper of arrayPapers; let index = index">
+              <hr>
+            <div class="row" *ngIf="tipoAutor">
+              <div  class="col-md-4 ">
+                <h5 class="title" >Paper {{index + 1 }}</h5>
+                <button class="btn button-perso"  (click)="eliminarPaper(index)">Eliminar Paper / Delete Paper</button>
+              </div>
+              <div class="row" >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Tipo Paper/Paper Type</label>
+                    <br>
+                    <div class="d-inline-block" ngbDropdown #dropRevista="ngbDropdown">
+                      <button type="button" class="btn btn-outline  btn-block btn-neutral border" id="dropdownManual"
+                        ngbDropdownAnchor (focus)="dropRevista.open()">{{paper.tipoPaper}}</button>
+                      <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                        <button ngbDropdownItem (click)="CambiarPaper(paper,index)"
+                          *ngFor="let paper of papers">{{paper.tipo}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5 pr-1">
+                  <div class="form-group">
+                    <label>Ids Paper</label>
+                    <input type="text" class="form-control mt-2" [(ngModel)]="paper.idPaper"   [ngModelOptions]="{standalone: true}">
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+            <div class="row" *ngIf="tipoAutor">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Título Paper/ Paper Title</label>
+                  <input type="text" class="form-control mt-2"[ngModelOptions]="{standalone: true}" [(ngModel)]="paper.titulo" >
+                </div>
+              </div>
+            </div>
+          
+            <div *ngIf="tipoAutor" style="text-align: center">
+             <h5 class="title">Autores Paper/Paper Authors</h5>
+              <div class="row" style="text-align: left;" >
+                <div class="col-md-3">
+                 <label> Nombre/Name</label>
+                </div>
+                <div class="col-md-3">
+                  <label> Apellido/Surname</label>
+                 </div>
+                 <div class="col-md-3">
+                  <label> Ponente/Speaker Paper</label>
+                 </div>
+              <!--    <div class="col-md-3">
+                  <label> Paga</label>
+                 </div> -->
+                
+              </div>
+              <div class="row" style="margin-top:5px" *ngFor="let autor of paper.autores; let indice = index" >
+             
+                <div class="col-md-3 mt-3">
+                  <input type="text" [(ngModel)]="autor.Nombre1" class="form-control" [ngModelOptions]="{standalone: true}" />
+                </div>
+                <div class="col-md-3  mt-3">
+                  <input type="text" [(ngModel)]="autor.Apellido1" class="form-control" [ngModelOptions]="{standalone: true}" />
+                </div>
+                <div class="col-md-3  mt-3">
+                  <label class="container" id="c2" *ngIf="autor.expositor">
+                    <input
+                      type="checkbox"
+                      checked="checked"
+                      (click)="cambiarEstadoExpositor(paper.autores,indice)"
+                      class="chek"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                  <label class="container" id="c2" *ngIf="!autor.expositor">
+                    <input
+                      type="checkbox"
+                      (click)="cambiarEstadoExpositor(paper.autores,indice)"
+                      class="chek"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              <div class="col-md-3 mt-3 " style="text-align: left;" *ngIf="indice!=0">
+                <button class="btn  button-perso" (click)="eliminarAutor(paper,indice)">
+                  Eliminar Paper/ Delete Paper
+                </button>
+              </div>
+            
+             
+            </div>
+            <div style="color: red !important;">
+              <label >Mensaje: AGREGAR de forma obligatoria todos los autores del paper, verificar que conste ud dentro de los Autores.
+                </label>
+                <label >
+                  Mandatory ADD all the authors of the paper, verify that you are among the authors.</label>
+            </div>
+           
+            <br>
+            <button class="btn button-perso"  (click)="agregarAutor(index)">Agregar Autor/ Add Author</button>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="tipoAutor"> 
+            <button class="btn button-perso" (click)="agregarPaper()">Agregar Paper / Add Paper</button>
+          </div>
+            <div class="row">
+              <div class="col-md-4 ">
+                <div class="form-group">
+                  <label>Teléfono/ Phone Number</label>
+                  <input type="text" class="form-control mt-2"[ngModelOptions]="{standalone: true}" [(ngModel)]="telefono"  onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control mt-2" (blur)="validarEmail()"   [ngModelOptions]="{standalone: true}" [(ngModel)]="email">
+                  <div class="alert alert-danger mt-3" role="alert" *ngIf="!mailValido" >
+                    Email incorrecto/ Wrong email
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 ">
+                <div class="form-group">
+                  <label>Lenguaje/Language</label>
+                  <div class="d-inline-block" ngbDropdown #dropLenguaje="ngbDropdown">
+                    <button type="button" class="btn btn-outline btn-neutral border btn-block" id="dropdownManual"
+                      ngbDropdownAnchor (focus)="dropLenguaje.open()">{{tipoIdioma}}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem *ngFor="let idioma of idiomas"
+                        (click)="CambiarLenguaje(idioma)">{{idioma.idioma}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <ngb-toast style=" margin: 0 auto;"class="toast" *ngIf="mostrarToas"  [autohide]="false" (hidden)="show=false">
+                Completar todos los datos/Complete all the information
+              </ngb-toast>
+            
+            </div>
+            <hr>
+            <div class="button-container" style="text-align: center;">
+              <button class="btn 
+              button-perso" (click)="guardarPersona()" submit>
+
+                Continuar / Next
+              </button>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="main-content animate__animated animate__zoomIn"  *ngIf="registroPago" >
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="card-header">
+          <h5 style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-right: 20px;"
+              (click)="cambiarForm('registroForm')"></i></h5>
+        </div>
+        <div style="text-align: center">
+          <img class=" border-gray" style="height: 100px; width: 100px" src="./assets/img/metodo-de-pago.png"
+            alt="...">
+            <h4>Total a pagar / Total to pay: </h4>
+            <h4>{{precioFinal}} $</h4>
+          <h5 class="title">Forma de pago / Way to pay </h5>
+         
+        </div>
+
+
+        <div class="card-body">
+
+          <div class="description" style="margin-left: 40px;">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+              <label class="form-check-label" for="flexRadioDefault1" (click)="CambiarMetodoPago(1)">
+                <i class="fa fa-money"></i>
+                Deposito ó Transferencia / Deposit or Transfer
+                
+                
+              </label>
+            </div>
+            <!--div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+              <label class="form-check-label" for="flexRadioDefault2" (click)="CambiarMetodoPago(2)">
+
+                <i class="fa fa-credit-card-alt"></i>
+                Tarjeta de credito/debito
+              </label>
+            </div-->
+          </div>
+          <hr>
+          <div class="button-container">
+            <button class="btn  button-perso" (click)="pago()">Continuar / Next </button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row animate__animated animate__zoomIn"  *ngIf="pagoEfectivo">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="card card-user ">
+      <div class="card-header">
+        <h5 style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-left: 20px; margin-top: 10px;"
+            (click)="retornarPago()"></i></h5>
+        </div>
+      
+
+
+      <div class="card-body">
+
+        <div class="description">
+         
+          <img src="./assets/img/DatosPago.jpeg" alt="">
+        </div>
+
+        <div class="button-container">
+          <button class="btn   button-perso" (click)="guardarDatos()">Finalizar Registro / Finish Registration </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="row animate__animated animate__zoomIn"   *ngIf="pagoTarjeta">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="card card-user ">
+      <div class="card-header">
+        <h5 style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-left: 20px; margin-top: 10px;"
+            (click)="retornarPago()"></i></h5>
+        </div>
+      <div style="text-align: center " class="mt-5">
+        <img class=" border-gray" style="height: 100px; width: 100px" src="./assets/img/pagoTarjeta.png" alt="...">
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="description">
+          <form name="f1" id="f1" action="#" method="post" class="alignet-form-vpos2">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="FirstName">Nombre</label>
+                  <input type="text" class="form-control"  name="shippingFirstName"  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="LastName">Apellido</label>
+                    <input type="text" class="form-control"  name="shippingLastName"  >
+                </div>
+              </div>
+             
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="Email">Email</label>
+                  <input type="text" class="form-control"  name="shippingEmail"  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="description">Descripción pago</label>
+                  <input type="text" class="form-control" value={{descripcionPago}} name="descriptionProducts" >
+                </div>
+              </div>
+             
+            </div>
+              <table>
+                  <tr><td></td><td><input type="hidden" name ="acquirerId" value={{acquirerId}} /></td></tr>
+                  <tr><td></td><td> <input type="hidden" name ="idCommerce" value={{idCommerce}} /></td></tr>
+                  <tr><td> </td><td><input type="hidden" name="purchaseOperationNumber" value={{purchaseOperationNumber}} /></td></tr>
+                  <tr><td> </td><td><input type="hidden" name="purchaseAmount" value={{purchaseAmount}} /></td></tr>
+                  <tr><td> </td><td><input type="hidden" name="purchaseCurrencyCode" value={{purchaseCurrencyCode}} /></td></tr>
+                  <tr><td> </td><td><input type="hidden" name="language" value={{language}} /></td></tr> 
+                  <tr><td> </td><td><input type="hidden" name="idPerson" value={{idnewPerson}}/></td></tr>     
+        
+            <tr><td></td><td><input type="hidden" name="shippingAddress" value="Ecuador" /></td></tr>
+                  <tr><td></td><td><input type="hidden" name="shippingCountry" value="Ecuador" /></td></tr>   
+                  <tr><td></td><td><input type="hidden" name="shippingZIP" value="180206" /></td></tr>
+                  <tr><td></td><td><input type="hidden" name="shippingCity" value="Ambato" /></td></tr>
+                  <tr><td></td><td><input type="hidden" name="shippingState" value="Tungurahua" /></td></tr>
+                  <tr><td></td><td><input type="hidden" name="shippingPhone" value="0999952397" /></td></tr>
+                  <tr><td></td><td><input type="hidden" name="shippingDNI" value="2300687510" /></td></tr>
+        
+                    <tr><td> </td><td><input type="hidden" name="programmingLanguage" value={{programmingLanguage}} /></td></tr>
+                    <tr><td> </td><td><input type="hidden" name="reserved1" value="SP" /></td></tr>
+                    <tr><td> </td><td><input type="hidden" name="reserved2" value={{purchaseAmount}} /></td></tr>
+                    <tr><td> </td><td><input type="hidden" name="reserved3" value="000" /></td></tr>
+                    <tr><td> </td><td><input type="hidden" name="reserved6" value="000" /></td></tr>
+                    <tr><td> </td><td><input type="hidden" name="reserved9" value={{purchaseAmount}} /></td></tr>
+                    <tr><td> </td><td><input type="hidden" name="reserved10" value="000" /></td></tr>
+                  <tr><td> </td><td><input type="hidden" name="purchaseVerification" value={{purchaseVerification}} /></td></tr>
+              
+              </table>
+
+              <div class="stats d-flex justify-content-end">
+                <label>Total  Pagar: ${{precioFinal}}</label> 
+                <br>  <br>
+                <div >
+                  <br>
+                  <button type="button" onclick="javascript:AlignetVPOS2.openModal('https://integracion.alignetsac.com/')" class="btn btn-success mb-2"> Pagar</button>
+                </div>
+              </div>
+              <hr />
+             
+           
+             
+            
+            </form>
+       <!--    <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+
+             
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="label">Número de identificacion</label>
+                    <input type="text" class="form-control mt-2"
+                       placeholder="2300687510">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Nombre como aparece en la tarjeta</label>
+                    <input type="text" class="form-control mt-2"
+                       placeholder="Omar Fonseca">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Número de tarjeta</label>
+                    <input type="text" class="form-control mt-2"
+                      placeholder="12871 61728 8127 71">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Fecha de expiración</label>
+                    <input type="text" class="form-control mt-2"
+                      placeholder="12/27">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Codigo de seguridad</label>
+                    <input type="password" class="form-control mt-2"
+                      placeholder="***">
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div> -->
+
+<!--         </div>
+<hr>
+        <div class="button-container">
+          <button class="btn   button-perso" (click)="guardarDatos()">Finalizar </button>
+
+        </div>
+      </div> -->
+
+    </div>
+  </div>
+</div>

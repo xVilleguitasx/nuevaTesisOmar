@@ -1,0 +1,630 @@
+<div class="container">
+  <!-- Header -->
+  <app-header-inicio></app-header-inicio>
+
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    [(activeId)]="active"
+    class="nav-tabs d-flex justify-content-center"
+  >
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Inicio</a>
+      <ng-template ngbNavContent>
+        <div class="row">
+          <div class="col-md-6 mx-auto my-5">
+            <div class="row">
+              <div class="col-md-12" *ngFor="let item of inicio">
+                <label>{{ item.texto_llamado }}</label>
+                <br />
+                <img
+                  [src]="URL + item.imagen_llamado"
+                  alt=""
+                  (click)="abrirEnlace(item.link_llamado)"
+                  style="cursor: pointer"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mx-auto my-5">
+            <div class="row">
+              <div class="col-md-6" *ngFor="let item of inicioGaleria">
+                <img
+                  class="img-fluid z-depth-1"
+                  [src]="URL + item.imagen"
+                  (click)="abrirEnlace(item.link)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Sobre el evento</a>
+      <ng-template ngbNavContent>
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="comite"
+          class="nav-tabs d-flex justify-content-center"
+        >
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>Presentación</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of presentacion">
+                  <P style="font-size: 20px; text-align: justify">
+                    {{ item.texto }}
+                  </P>
+                  <div class="row" style="display: flex">
+                    <div
+                      class="col-md-6 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="
+                        item.imagen_boton_1 != '' && item.imagen_boton_1 != null
+                      "
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.imagen_boton_1"
+                        (click)="abrirEnlace(item.link_boton_1)"
+                      />
+                    </div>
+                    <div
+                      class="col-md-6 mx-auto my-5"
+                      style="cursor: pointer; text-align: right"
+                      *ngIf="
+                        item.imagen_boton_2 != '' && item.imagen_boton_2 != null
+                      "
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.imagen_boton_2"
+                        (click)="abrirEnlace(item.link_boton_2)"
+                      />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>Lugar del evento</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of lugarDelEvento">
+                  <p style="font-size: 20px; text-align: justify">
+                    {{ item.texto_1 }}
+                  </p>
+                  <img
+                    class="img-fluid z-depth-1"
+                    [src]="URL + item.imagen"
+                    alt="croquisUTAHUACHI"
+                  />
+                  <p style="font-size: 20px; text-align: left">
+                    {{ item.texto_2 }}
+                  </p>
+                  <h3 class="titulo" style="color: #7a1e19">
+                    GALERIA DE FOTOS
+                  </h3>
+                  <hr />
+                  <div class="row">
+                    <div
+                      class="col-md-4 mx-auto my-5"
+                      style="cursor: pointer; text-align: center"
+                      *ngFor="let item of galeriaLugar"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.imagen"
+                        style="
+                          width: 250px !important;
+                          height: 250px !important;
+                        "
+                      />
+                      <br />
+                      <label>{{ item.nombre }}</label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>Información túristica</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li
+                  class="list-group-item"
+                  *ngFor="let item of informacionTuristica"
+                >
+                  <P style="font-size: 20px; text-align: justify">
+                    {{ item.texto }}
+                  </P>
+
+                  <div class="row">
+                    <div class="col-md-2"></div>
+                    <div
+                      class="col-md-3 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="item.boton1 != '' && item.boton1 != null"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.boton1"
+                        (click)="abrirEnlace(item.link1)"
+                      />
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div
+                      class="col-md-3 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="item.boton2 != '' && item.boton2 != null"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.boton2"
+                        (click)="abrirEnlace(item.link2)"
+                      />
+                      <div class="col-md-2"></div>
+                    </div>
+                  </div>
+                  <ul class="list-group">
+                    <h3 class="titulo" style="color: #7a1e19">
+                      GALERIA DE FOTOS
+                    </h3>
+                    <div>
+                      <hr />
+                    </div>
+                    <div class="row">
+                      <div
+                        class="col-md-4 mx-auto my-5"
+                        style="cursor: pointer; text-align: center"
+                        *ngFor="let item of galeriaInformacion"
+                      >
+                        <img
+                          class="img-fluid z-depth-1"
+                          [src]="URL + item.imagen"
+                          style="
+                            width: 250px !important;
+                            height: 250px !important;
+                          "
+                        />
+                        <br />
+                        <label>{{ item.nombre }}</label>
+                      </div>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a ngbNavLink>Conferencistas</a>
+      <ng-template ngbNavContent>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="row">
+              <div
+                class="col-4"
+                *ngFor="let item of investigadores"
+                (click)="abrirPDF(item.hoja_de_vida)"
+                style="cursor: pointer"
+              >
+                <img class="img-fluid z-depth-1" [src]="URL + item.foto" />
+                <hr />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="4">
+      <a ngbNavLink>Comite</a>
+      <ng-template ngbNavContent>
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="comite"
+          class="nav-tabs d-flex justify-content-center"
+        >
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>ORGANIZADOR</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-4" *ngFor="let item of comiteOrganizador">
+                      {{ item.nombre }}
+                      <br />
+                      {{ item.cargo }}
+                      <hr />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>CIENTIFICO</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-4" *ngFor="let item of comiteCientifico">
+                      {{ item.nombre }}
+                      <br />
+                      {{ item.instituto }}
+                      <br />
+                      {{ item.cargo }}
+                      <hr />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="5">
+      <a ngbNavLink>Programa</a>
+      <ng-template ngbNavContent>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let item of programa">
+            <P style="font-size: 20px; text-align: justify">
+              {{ item.descripcion }}
+            </P>
+            <label style="cursor: pointer" (click)="abrirEnlace(item.link)">
+              {{ item.boton }}
+            </label>
+
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6 mx-auto my-5">
+                <img
+                  (click)="abrirPDF(item.triptico)"
+                  class="img-fluid z-depth-1"
+                  [src]="URL + item.imagen"
+                />
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+
+            <div class="scrollme">
+              <table
+                class="table table-striped mt-3 expand"
+                style="width: 100%"
+                *ngFor="let jornada of programaJornada"
+              >
+                <thead>
+                  <tr class="row" style="font-weight: bold; text-align: center">
+                    <td
+                      class="col"
+                      style="
+                        text-align: center;
+                        background-color: white;
+                        font-size: 20 px;
+                      "
+                    >
+                      {{ jornada.nombre }}
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <div *ngIf="jornada.id === 1">
+                    <tr class="row" style="border: 1px solid #7a1e19">
+                      <td
+                        scope="col"
+                        *ngFor="let dias of DiasMatutina"
+                        class="col"
+                        style="text-align: center; background-color: white"
+                      >
+                        {{ dias.fecha }}
+                        <hr style="background-color: #7a1e19" />
+                        <div *ngFor="let detalle of programaDetalle">
+                          <div *ngIf="dias.id === detalle.dia_per">
+                            <label>
+                              {{ detalle.hora }}
+                              <br />
+                              {{ detalle.actividad }}
+                            </label>
+                            <hr style="background-color: #7a1e19" />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </div>
+
+                  <div *ngIf="jornada.id != 1">
+                    <tr class="row" style="border: 1px solid #7a1e19">
+                      <td
+                        *ngFor="let dias of DiasVespertina"
+                        class="col"
+                        style="text-align: center; background-color: white"
+                      >
+                        {{ dias.fecha }}
+                        <hr style="background-color: #7a1e19" />
+                        <div *ngFor="let detalle of programaDetalle">
+                          <div *ngIf="dias.id === detalle.dia_per">
+                            <label>
+                              {{ detalle.actividad }}
+                            </label>
+                            <hr style="background-color: #7a1e19" />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </div>
+                </tbody>
+              </table>
+            </div>
+          </li>
+        </ul>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="6">
+      <a ngbNavLink>Envio de trabajos</a>
+      <ng-template ngbNavContent>
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="trabajos"
+          class="nav-tabs d-flex justify-content-center"
+        >
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>INFORMACION</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of envioTrabajos">
+                  <div class="row">
+                    <div class="col-md-8" style="text-align: justify">
+                      {{ item.texto }}
+                    </div>
+                    <div
+                      class="col-md-4 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="item.boton != '' && item.boton != null"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.boton"
+                        (click)="abrirEnlace(item.link)"
+                        style="max-width: 300px; max-height: 300px"
+                      />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <hr />
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="titulo" style="color: #7a1e19">FORMATOS</h3>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                  class="col-md-4 mx-auto my-5"
+                  *ngFor="let item of envioTrabajosFormatos"
+                  (click)="abrirEnlace(item.link)"
+                  style="cursor: pointer; text-align: center"
+                >
+                  <a
+                    ><img class="img-fluid z-depth-1" [src]="URL + item.boton"
+                  /></a>
+                  <label style="text-align: justify"> {{ item.texto }} </label>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>TEMARIO</a>
+            <ng-template ngbNavContent>
+              <div class="scrollme">
+                <div class="row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                    <table
+                      class="table table-striped mt-3"
+                      style="text-align: center; border: 1px solid black"
+                      *ngFor="let temario of temarios"
+                    >
+                      <thead>
+                        <tr style="font-weight: bold; font-size: 18px">
+                          <td scope="col">{{ temario.titulo }}</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let temarioTema of temarioTemas"
+                          style="font-size: 14px"
+                        >
+                          <td
+                            scope="col"
+                            *ngIf="temario.id == temarioTema.id_tema_per"
+                          >
+                            {{ temarioTema.tema }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-md-3"></div>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>FECHAS IMPORTANTES</a>
+            <ng-template ngbNavContent>
+              <div class="scrollme">
+                <table
+                  class="table table-striped mt-3"
+                  style="text-align: center"
+                >
+                  <thead>
+                    <tr style="font-weight: bold; font-size: 12px">
+                      <td scope="col">Fecha</td>
+                      <td scope="col">Actividad</td>
+                    </tr>
+                  </thead>
+                  <!--   *ngFor="let dia of programaDias" -->
+                  <tbody>
+                    <tr
+                      *ngFor="let item of envioTrabajosFechas"
+                      style="font-size: 10px"
+                    >
+                      <td scope="col">{{ item.fecha }}</td>
+                      <td scope="col">{{ item.actividad }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="7">
+      <a ngbNavLink>Contacto</a>
+      <ng-template ngbNavContent>
+        <!--  <div class="subtitle">
+          CONTACTENOS
+        </div> -->
+        <section class="form_wrap">
+          <section class="cantact_info">
+            <section class="info_items">
+              <p>
+                Gracias por su interés en el CONGRESO DE CIENCIA DE LA
+                COMPUTACION, ELECTRONICA E INDUSTRIAL. Proporcione la siguiente
+                información sobre sus necesidades para ayudarnos a brindarle un
+                mejor servicio. Esta información nos permitirá enviar su
+                solicitud a la persona adecuada. Debería recibir una respuesta
+                dentro de las 48 horas.
+              </p>
+              <p>Correo electrónico: csei@uta.edu.ec</p>
+            </section>
+          </section>
+
+          <form action="" class="form_contact" (submit)="sendEmail($event)">
+            <h2>Envia un mensaje</h2>
+            <div class="user_info">
+              <label for="names">Nombres *</label>
+              <input
+                type="text"
+                id="names"
+                name="nombre"
+                [(ngModel)]="nombreContacto"
+              />
+
+              <label for="phone">Telefono / Celular</label>
+              <input
+                type="text"
+                id="phone"
+                name="numero"
+                [(ngModel)]="telefonoContacto"
+              />
+
+              <label for="phone">Dirección de correo electrónico</label>
+              <input
+                type="text"
+                id="phone"
+                name="correo"
+                [(ngModel)]="correoContacto"
+              />
+
+              <label for="mensaje">Mensaje *</label>
+              <textarea
+                id="mensaje"
+                name="mensaje"
+                [(ngModel)]="mensajeContacto"
+              ></textarea>
+              <button
+                class="btn"
+                style="background-color: #7a1e19; font-size: 18px"
+                type="submit"
+                value="Send"
+              >
+                Enviar
+              </button>
+            </div>
+          </form>
+        </section>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="8">
+      <a ngbNavLink>Ediciones anteriores</a>
+      <ng-template ngbNavContent>
+        <div class="row">
+          <div
+            class="col-md-4 mx-auto my-5"
+            *ngFor="let item of ediciones"
+            (click)="abrirPDF(item.pdf)"
+            style="cursor: pointer"
+          >
+            <a><img class="img-fluid z-depth-1" [src]="URL + item.imagen" /></a>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+
+    
+    <li>
+      <button
+        class="button-perso"
+        style="
+          top: 50%;
+          bottom: 50%;
+          width: 100%;
+          margin-top: 5px;
+          margin-left: 15%;
+          color: white;
+          border: 3px solid white;
+          border-radius: 5px;
+        "
+        
+        routerLinkActive="router-link-active"
+        (click)="enviarARegistro1()"
+      >
+        REGISTRO DEPOSITO/TRANSFERENCIA
+      </button>
+    </li>
+    <li>
+      <button
+        class="button-perso"
+        style="
+          top: 50%;
+          bottom: 50%;
+          width: 100%;
+          margin-top: 5px;
+          margin-left: 15%;
+          color: white;
+          border: 3px solid white;
+          border-radius: 5px;
+        "
+        
+        routerLinkActive="router-link-active"
+        (click)="enviarARegistro2()"
+      >
+        REGISTRO TARJETA DE CREDITO
+      </button>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+  <!-- Footer -->
+  <app-footer-inicio></app-footer-inicio>
+</div>
