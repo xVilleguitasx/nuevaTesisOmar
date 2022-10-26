@@ -4022,6 +4022,18 @@ this.expositores=result;
         this.getComite();
       });
   }
+  generarCertificadoExpositor(expositor: Expositor) {
+    
+
+   
+    const enviar = {
+      id: expositor.id,
+      nombre: expositor.nombre,
+      titulo: expositor.titulo,
+
+    };
+    this._expositorService.generarCertificado(enviar).subscribe((result) => {});
+  }
   generarCertificadoAutor(autor: Autores) {
     let nombres=""
     let cont =0;
