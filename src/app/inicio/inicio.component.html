@@ -358,6 +358,8 @@
                         <div *ngFor="let detalle of programaDetalle">
                           <div *ngIf="dias.id === detalle.dia_per">
                             <label>
+                              {{ detalle.hora }}
+                              <br />
                               {{ detalle.actividad }}
                             </label>
                             <hr style="background-color: #7a1e19" />
