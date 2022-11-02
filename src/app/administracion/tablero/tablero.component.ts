@@ -104,6 +104,7 @@ import { CertificadosAsistenciaService } from "../../../app/services/certificado
 
 import { ExpositorService } from "../../../app/services/expositor.service";
 import { Expositor } from "../../../app/models/expositor.model";
+import { element } from "protractor";
 
 @Component({
   selector: "app-tablero",
@@ -3965,6 +3966,7 @@ this.expositores=result;
       id: inscripcion.numero,
       nombre: inscripcion.nombres + " " + inscripcion.apellidos,
       cedula: inscripcion.di,
+      correo:inscripcion.correo
     };
     this._certificadosPService
       .crearCertificado(enviar)
@@ -3976,6 +3978,7 @@ this.expositores=result;
         id: element.numero,
         nombre: element.nombres + " " + element.apellidos,
         cedula: element.di,
+        correo:element.correo
       };
       this._certificadosPService
         .crearCertificado(enviar)
@@ -3990,6 +3993,7 @@ this.expositores=result;
       id: inscripcion.numero,
       nombre: inscripcion.nombres + " " + inscripcion.apellidos,
       cedula: inscripcion.di,
+      correo:inscripcion.correo
     };
     this._certificadosAsistenicaService
       .crearCertificado(enviar)
@@ -4001,6 +4005,7 @@ this.expositores=result;
         id: element.numero,
         nombre: element.nombres + " " + element.apellidos,
         cedula: element.di,
+        correo:element.correo
       };
       this._certificadosAsistenicaService
         .crearCertificado(enviar)
