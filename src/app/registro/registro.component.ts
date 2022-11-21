@@ -464,7 +464,7 @@ export class RegistroComponent implements OnInit {
                 this.persona.id_tip_ins_pert === 1 ||
                 this.persona.id_tip_ins_pert === 4
               ) {
-                this.inscripciones = this.inscripciones.filter((element) => (element.nom_inscr==='AUTHOR' || element.nom_inscr==='AUTHOR UTA'));
+               
                 this.paperService
                   .getPaper(this.idInscripcion)
                   .subscribe((result) => {
@@ -518,6 +518,7 @@ export class RegistroComponent implements OnInit {
               this.email = this.persona.email != null ? this.persona.email : "";
               this.telefono =
                 this.persona.celular != null ? this.persona.celular : "";
+             
               this.tipoInscripcion =
                 this.inscripciones[this.persona.id_tip_ins_pert - 1].nom_inscr;
               this.idTipoInscripcion = this.persona.id_tip_ins_pert;
@@ -590,6 +591,7 @@ export class RegistroComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.inscripcionExiste = true;
+        
       } else {
         this.cambiarForm("registroID");
         this.RestablecerDatos();

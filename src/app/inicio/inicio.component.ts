@@ -218,8 +218,8 @@ export class InicioComponent implements OnInit {
     });
   }
   enviarARegistro1(){
-    window.open("https://csei.uta.edu.ec/csei2022/registro-CSEI/register.php", "_blank");
-  }
+    window.open("https://csei.uta.edu.ec/csei2022/#/acerca-de", "_blank");
+  }
   enviarARegistro2(){
     window.open("https://utaep.com.ec/bdp/login.php", "_blank");
   }

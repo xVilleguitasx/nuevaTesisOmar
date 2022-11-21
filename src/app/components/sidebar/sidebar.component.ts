@@ -80,11 +80,13 @@ export class SidebarComponent implements OnInit {
   
   getConf() {
     this.configService.getConf().subscribe((result) => {
+ 
       this.config = result;
       this.config.forEach((element) => {
-        if (element.estado) {
+        if (  element.estado) {
+
         } else {
-          ROUTES = ROUTES.filter((item) => item.title != element.nombre);
+          ROUTES = ROUTES.filter((item) => item.title != element.nombre );
         }
       });
       this.menuItems = ROUTES.filter((menuItem) => menuItem);
