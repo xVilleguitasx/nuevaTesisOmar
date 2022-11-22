@@ -105,6 +105,7 @@ import { CertificadosAsistenciaService } from "../../../app/services/certificado
 import { ExpositorService } from "../../../app/services/expositor.service";
 import { Expositor } from "../../../app/models/expositor.model";
 import { element } from "protractor";
+import { PaperService } from "../../../app/services/paper.service";
 
 @Component({
   selector: "app-tablero",
@@ -200,8 +201,43 @@ export class TableroComponent implements OnInit {
     private _certificadosCService: CertificadosCService,
     private _autoresService: AutoresService,
     private _certificadosAsistenicaService: CertificadosAsistenciaService,
-    private _expositorService:ExpositorService
+    private _expositorService:ExpositorService,
+    private _paperService:PaperService
   ) {}
+  ///
+  arrayPapersReportes = [];
+
+  getPaperReporte(){
+    this.arrayPapersReportes=[];
+    this._paperService.getPapers().subscribe((result)=>{
+        result.forEach(paper => {
+          this._autoresService
+          .getAutoresPaper(paper.id)
+          .subscribe((result) => {
+            let tipoPaper = "";
+            this.papers.forEach((element) => {
+              if (element.id === paper.id_tipopaper) {
+                tipoPaper = element.tipo;
+              }
+            });
+            this.arrayPapersReportes.push({
+              id: paper.id,
+              tipoPaper: tipoPaper,
+              idTipoPaper: paper.id_tipopaper,
+              idPaper: paper.id_paper,
+              titulo: paper.titulo,
+              autores: result,
+            });
+            this.arrayPapersReportes.sort(((a, b) => a.idPaper - b.idPaper));
+          });
+        });
+                
+ 
+    })
+  }
+
+  ///
+  papers:Paper[]=[];
   usuarios: Usuarios[] = [];
   registros: string[] = [
     "Seleccione...",
@@ -445,6 +481,7 @@ export class TableroComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getPaperReporte();
     if (this.rol === "COMITE_ORGANIZADOR") {
       this.active = 2;
     }
@@ -671,7 +708,6 @@ this.expositores=result;
       this.inscripcionesFiltradas = result;
       this.inscripciones = result;
       this.getInscripcionesValidadas();
-      console.log(this.inscripcionesFiltradas)
     });
   }
   getInscripcionesValidadas() {
@@ -2323,9 +2359,12 @@ this.expositores=result;
     if (content._declarationTContainer.localNames[0] === "reporteGeneral") {
       this.contarInscritos();
       size = "lg";
-    } else {
+    } else if(content._declarationTContainer.localNames[0] === "reporteInscritos") {
       this.busquedaGlobal();
       size = "xl";
+    }else{
+      this.getPaperReporte();
+      size = "lg";
     }
 
     this.modalRef = this._modalService.open(content, { size: size });

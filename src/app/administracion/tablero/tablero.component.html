@@ -601,6 +601,12 @@
             <i class="fa fa-plus" aria-hidden="true"></i> Generar Reporte
           </button>
         </div>
+        <div>
+          <h2>Reportes Paper</h2>
+          <button class="btn" (click)="openModalReportes(reportePapers)">
+            <i class="fa fa-plus" aria-hidden="true"></i> Reporte General
+          </button>
+        </div>
       </ng-template>
     </li>
     <li [ngbNavItem]="3" *ngIf="rol==='ADMINISTRADOR' || rol==='COMITE_ORGANIZADOR'">
@@ -5476,6 +5482,54 @@
         </div>
       </form>
      
+    </div>
+  </ng-template>
+  <ng-template #reportePapers let-modal>
+    <div class="row">
+      <div class="col-6" style="text-align: left">
+        <button class="btn btn-rojo" (click)="getPDF()">
+          Convertir a PDF
+        </button>
+      </div>
+    </div>
+
+    <div class="canvas_div_pdf">
+      <div style="width: 100% !important">
+        <div style="width: 100% !important" class="contenedor">
+          <img style="width: 100% !important" src="./assets/img/BANNER.png" />
+          <div class="texto-encima">{{ informacionCongreso[0].titulo }}</div>
+          <div class="centrado">
+            <h3 style="font-weight: bold">Reporte Papers</h3>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="modal-body" *ngFor="let paper of arrayPapersReportes">
+        <div class="scrollme">
+          
+          <br>
+          <span style="font-weight: bold ;"> ID:</span>  {{paper.idPaper}} <br>
+          <span style="font-weight: bold ;">  TITLE:</span> {{paper.titulo}} <br>
+          <span style="font-weight: bold ;">  AUTHORS: </span> <ul>
+            <li *ngFor="let autor of paper.autores">
+              {{autor.Nombre1 + ' ' + autor.Apellido1   }}
+            </li>
+          </ul>
+          <span style="font-weight: bold ;"> AUTHOR PAYS:</span> 
+            <p *ngFor="let autor of paper.autores">
+              <label *ngIf="autor.paga"><ul>
+                <li> {{autor.Nombre1 + ' ' + autor.Apellido1   }}</li>
+              </ul></label>
+            </p>
+          <span style="font-weight: bold ;"> AUTHOR EXPOSES:</span> 
+          <p *ngFor="let autor of paper.autores">
+            <label *ngIf="autor.expositor"> <ul>
+              <li> {{autor.Nombre1 + ' ' + autor.Apellido1   }}</li>
+            </ul></label>
+          </p>
+          <hr>
+        </div>
+      </div>
     </div>
   </ng-template>
   <ng-template #reporteInscritos let-modal>

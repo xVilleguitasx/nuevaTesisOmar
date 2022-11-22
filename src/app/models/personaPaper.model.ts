@@ -5,4 +5,5 @@ export interface PersonaPaper {
   id_tipopaper: number;
   titulo:string;
   certificado?:string;
+  certificado_E?:string;
 }
