@@ -64,14 +64,15 @@ export class CertificadoComponent implements OnInit {
     });
   }
   getCertificadoExpositor() {
-   
     this.papers.forEach((element) => {
-      console.log(element)
       this._expositorService.getExpositor(element.id).subscribe((result) => {
         console.log(result)
-        if (result.certificado_E != null && result.certificado_E != "") {
-          this.expositores.push(result);
-        }
+        result.forEach((expositor)=>{
+          if (expositor.certificado_A != null && expositor.certificado_A != "") {
+            this.expositores.push(expositor);
+          }
+        })
+       
       });
     });
   }

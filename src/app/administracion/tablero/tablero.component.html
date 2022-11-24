@@ -804,6 +804,7 @@
                 <thead>
                   <tr style="font-weight: bold; font-size: 12px">
                     <td scope="col">Certificado Expositor</td>
+                    <td scope="col">Id Paper</td>
                     <td scope="col">Nombre</td>
                     <td scope="col">Título paper</td>
                   </tr>
@@ -816,7 +817,7 @@
                     "
                     style="font-size: 10px"
                   >
-                    <td scope="col " *ngIf="expositor.certificado_E === ''  || expositor.certificado_E===null">
+                    <td scope="col " *ngIf="expositor.certificado_A === ''  || expositor.certificado_A===null">
                       <label class="container" id="c2">
                         <input
                           type="checkbox"
@@ -826,7 +827,7 @@
                         <span class="checkmark"></span>
                       </label>
                     </td>
-                    <td scope="col " *ngIf="expositor.certificado_E != '' && expositor.certificado_E!=null">
+                    <td scope="col " *ngIf="expositor.certificado_A != '' && expositor.certificado_A!=null">
                       <label class="container" id="c2">
                         <input
                           type="checkbox"
@@ -836,7 +837,7 @@
                         <span class="checkmark"></span>
                       </label>
                     </td>
-    
+                    <td scope="col">{{ expositor.id_paper }}</td>
                     <td scope="col">{{ expositor.nombre }}</td>
                     <td scope="col">{{ expositor.titulo }}</td>
                   </tr>

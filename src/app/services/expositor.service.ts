@@ -15,7 +15,7 @@ export class ExpositorService {
     return this.http.get<Expositor[]>(`${this.api}/expositor`);
   }
   getExpositor(id:string) {
-    return this.http.get<Expositor>(`${this.api}/expositor/${id}`);
+    return this.http.get<Expositor[]>(`${this.api}/expositor/${id}`);
   }
   generarCertificado(expositor:any): any{
     return this.http.post<Expositor>(`${this.api}/expositor`,expositor);

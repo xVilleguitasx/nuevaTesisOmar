@@ -4067,14 +4067,11 @@ this.expositores=result;
       });
   }
   generarCertificadoExpositor(expositor: Expositor) {
-    
-
-   
     const enviar = {
       id: expositor.id,
+      id_paper:expositor.id_paper,
       nombre: expositor.nombre,
       titulo: expositor.titulo,
-
     };
     this._expositorService.generarCertificado(enviar).subscribe((result) => {});
   }
@@ -4100,12 +4097,24 @@ this.expositores=result;
     this._autoresService.editAutor(enviar).subscribe((result) => {});
   }
   generarTodoCertificadoAutor() {
-    this.autores.forEach((element) => {
+    this.autores.forEach((autor) => {
+      let nombres=""
+      let cont =0;
+      autor.autores.forEach((element)=>{
+        nombres +=element.Nombre1 +" " + element.Apellido1;
+       
+        if(cont !=autor.autores.length-1){
+          nombres+=", "
+        }
+        cont++;
+      });
+  
+     
       const enviar = {
-        id: element.id,
-        nombre: element.nombre,
-        cedula: element.ci,
-        titulo: element.titulo,
+        id: autor.paper_id,
+        nombre: nombres,
+        titulo: autor.titulo,
+  
       };
       this._autoresService.editAutor(enviar).subscribe((result) => {});
     });
@@ -4115,8 +4124,10 @@ this.expositores=result;
   }
   generarTodoCertificadoExpositor() {
     this.expositores.forEach((element) => {
+      console.log(element.nombre)
       const enviar = {
         id: element.id,
+        id_paper:element.id_paper,
         nombre: element.nombre,
         titulo: element.titulo,
       };

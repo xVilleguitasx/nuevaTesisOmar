@@ -87,8 +87,8 @@
               </tr>
               <label *ngIf="expositores.length>0" style="color:brown;font-weight: bold; font-size:15px ;"> Certificados de expositores </label>
               <tr style="font-size: 15px" *ngFor="let expositor of expositores">
-                <td>{{ expositor.titulo }}</td>
-                <td style="text-align: center" (click)="abrirPDF(expositor.certificado_E)">
+                <td>{{expositor.nombre + " - "+ expositor.titulo }}</td>
+                <td style="text-align: center" (click)="abrirPDF(expositor.certificado_A)">
                   <h5><span class="badge"  style="cursor: pointer">Descargar</span></h5>
                 </td>
               </tr>
