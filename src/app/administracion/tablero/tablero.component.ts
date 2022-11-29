@@ -4091,8 +4091,7 @@ this.expositores=result;
     const enviar = {
       id: autor.paper_id,
       nombre: nombres,
-      titulo: autor.titulo,
-
+      titulo: autor.titulo
     };
     this._autoresService.editAutor(enviar).subscribe((result) => {});
   }
@@ -4113,8 +4112,7 @@ this.expositores=result;
       const enviar = {
         id: autor.paper_id,
         nombre: nombres,
-        titulo: autor.titulo,
-  
+        titulo: autor.titulo
       };
       this._autoresService.editAutor(enviar).subscribe((result) => {});
     });
